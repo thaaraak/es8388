@@ -52,7 +52,7 @@ void setup(void) {
   out.begin(config);
 
   // Setup sine wave
-  sineWave.begin(channels, sample_rate, 1000);
+  sineWave.begin(channels, sample_rate, 2000);
   Serial.println("started...");
 }
 
