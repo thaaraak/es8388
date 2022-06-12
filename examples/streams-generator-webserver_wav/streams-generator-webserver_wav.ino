@@ -13,8 +13,8 @@
 using namespace audio_tools;
 
 // WIFI
-const char *ssid = "tollington";
-const char *password = "Snitchy43";
+const char *ssid = "xx";
+const char *password = "xx";
 
 AudioWAVServer server(ssid, password);
 
