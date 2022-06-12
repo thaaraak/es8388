@@ -5,7 +5,7 @@ BluetoothA2DPSink a2dp_sink;
 #include "BluetoothA2DPSink.h"
 #include "es8388.h"
 
-int bits_per_sample = 16;
+int bits_per_sample = 32;
 
 void setup() {
 

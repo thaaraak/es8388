@@ -1,14 +1,3 @@
-#include "freertos/FreeRTOS.h"
-#include "esp_system.h"
-#include "esp_event.h"
-#include "esp_event_loop.h"
-#include "esp_log.h"
-#include "driver/i2c.h"
-#include "driver/gpio.h"
-#include "driver/i2s.h"
-#include "soc/gpio_sig_map.h"
-#include "math.h"
-
 #include "es8388.h"
 
 #define ES8388_ADDR 0b0010000
@@ -74,7 +63,6 @@ int es8388::set_adc_dac_volume(int mode, int volume, int dot)
 {
     int res = 0;
     if ( volume < -96 || volume > 0 ) {
-        ESP_LOGW(ES_TAG, "Warning: volume < -96! or > 0!\n");
         if (volume < -96)
             volume = -96;
         else
@@ -114,13 +102,11 @@ esp_err_t es8388::init( es_dac_output_t output, es_adc_input_t input )
     res |= es_write_reg(ES8388_DACCONTROL23, 0x00);   //vroi=0
     res |= set_adc_dac_volume(ES_MODULE_DAC, 0, 0);          // 0db
 
-    ESP_LOGE(ES_TAG, "Setting DAC Output: %02x", output );
     res |= es_write_reg(ES8388_DACPOWER, output );
     res |= es_write_reg(ES8388_ADCPOWER, 0xFF);
     res |= es_write_reg(ES8388_ADCCONTROL1, 0x11); // MIC Left and Right channel PGA gain
 
 
-    ESP_LOGE(ES_TAG, "Setting ADC Input: %02x", input );
     res |= es_write_reg(ES8388_ADCCONTROL2, input);
 
     res |= es_write_reg(ES8388_ADCCONTROL3, 0x02);
