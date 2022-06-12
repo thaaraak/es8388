@@ -19,8 +19,8 @@ const char *password = "Snitchy43";
 AudioWAVServer server(ssid, password);
 
 // Sound Generation
-const int sample_rate = 10000;
-const int channels = 1;
+const int sample_rate = 16000;
+const int channels = 2;
 
 SineWaveGenerator<int16_t> sineWave;            // Subclass of SoundGenerator with max amplitude of 32000
 GeneratedSoundStream<int16_t> in(sineWave);     // Stream generated from sine wave
@@ -28,7 +28,7 @@ GeneratedSoundStream<int16_t> in(sineWave);     // Stream generated from sine wa
 
 void setup() {
   Serial.begin(115200);
-  AudioLogger::instance().begin(Serial,AudioLogger::Info);
+  AudioLogger::instance().begin(Serial,AudioLogger::Error);
 
   // start server
   server.begin(in, sample_rate, channels);

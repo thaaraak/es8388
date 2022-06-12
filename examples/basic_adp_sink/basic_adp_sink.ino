@@ -41,7 +41,7 @@ void setup() {
   };
     a2dp_sink.set_pin_config(my_pin_config);
     a2dp_sink.set_i2s_config(i2s_config);
-    a2dp_sink.start("Cahuna");
+    a2dp_sink.start("AG5LE");
 }
 
 
