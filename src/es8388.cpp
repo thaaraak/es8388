@@ -9,44 +9,44 @@ es8388::es8388()
 {
 }
 
-err_t es8388::begin( TwoWire *theWire )
+bool es8388::begin( TwoWire *theWire )
 {
 	  if (i2c_dev)
 	    delete i2c_dev;
 	  i2c_dev = new Adafruit_I2CDevice(ES8388_ADDR, theWire);
 	  if (!i2c_dev->begin())
-	    return ERROR_I2C_DEVICENOTFOUND;
+	    return false;
 
-	  return ERROR_NONE;
+	  return true;
 
 }
 
-err_t es8388::i2c_write( uint8_t reg, uint8_t value)
+bool es8388::i2c_write( uint8_t reg, uint8_t value)
 {
 	uint8_t buffer[2] = {reg, value};
 	if (i2c_dev->write(buffer, 2)) {
-	    return ERROR_NONE;
+	    return true;
 	} else {
-	    return ERROR_I2C_TRANSACTION;
+	    return false;
 	}
 }
 
 
-err_t es8388::i2c_read( uint8_t reg, uint8_t* value )
+bool es8388::i2c_read( uint8_t reg, uint8_t* value )
 {
 	if (i2c_dev->write_then_read(&reg, 1, value, 1)) {
-	    return ERROR_NONE;
+	    return true;
 	} else {
-	    return ERROR_I2C_TRANSACTION;
+	    return false;
 	}
 }
 
-esp_err_t es8388::es_write_reg(uint8_t reg_add, uint8_t data)
+bool es8388::es_write_reg(uint8_t reg_add, uint8_t data)
 {
     return i2c_write( reg_add, data );
 }
 
-esp_err_t es8388::es_read_reg(uint8_t reg_add, uint8_t *p_data)
+bool es8388::es_read_reg(uint8_t reg_add, uint8_t *p_data)
 {
     return i2c_read( reg_add, p_data );
 }
@@ -81,7 +81,7 @@ int es8388::set_adc_dac_volume(int mode, int volume, int dot)
     return res;
 }
 
-esp_err_t es8388::init( es_dac_output_t output, es_adc_input_t input )
+bool es8388::init( es_dac_output_t output, es_adc_input_t input )
 {
     int res = 0;
 
@@ -134,9 +134,9 @@ esp_err_t es8388::init( es_dac_output_t output, es_adc_input_t input )
 //
 // Note the above must match the ESP-IDF I2S configuration which is set separately
 
-esp_err_t es8388::config_i2s( es_bits_length_t bits_length, es_module_t mode, es_format_t fmt )
+bool es8388::config_i2s( es_bits_length_t bits_length, es_module_t mode, es_format_t fmt )
 {
-    esp_err_t res = ESP_OK;
+    bool res = ESP_OK;
     uint8_t reg = 0;
 
     // Set the Format
@@ -172,9 +172,9 @@ esp_err_t es8388::config_i2s( es_bits_length_t bits_length, es_module_t mode, es
 }
 
 
-esp_err_t es8388::set_voice_mute(bool enable)
+bool es8388::set_voice_mute(bool enable)
 {
-    esp_err_t res = ESP_OK;
+    bool res = ESP_OK;
     uint8_t reg = 0;
     res = es_read_reg(ES8388_DACCONTROL3, &reg);
     reg = reg & 0xFB;
@@ -182,9 +182,9 @@ esp_err_t es8388::set_voice_mute(bool enable)
     return res;
 }
 
-esp_err_t es8388::start(es_module_t mode)
+bool es8388::start(es_module_t mode)
 {
-    esp_err_t res = ESP_OK;
+    bool res = ESP_OK;
     uint8_t prev_data = 0, data = 0;
     es_read_reg(ES8388_DACCONTROL21, &prev_data);
     if (mode == ES_MODULE_LINE) {
@@ -218,9 +218,9 @@ esp_err_t es8388::start(es_module_t mode)
 }
 
 
-esp_err_t es8388::set_voice_volume(int volume)
+bool es8388::set_voice_volume(int volume)
 {
-    esp_err_t res = ESP_OK;
+    bool res = ESP_OK;
     if (volume < 0)
         volume = 0;
     else if (volume > 100)

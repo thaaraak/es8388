@@ -9,10 +9,6 @@
 #endif
 #include <Adafruit_I2CDevice.h>
 
-#include "asserts.h"
-#include "errors.h"
-
-
 /* ES8388 register */
 #define ES8388_CONTROL1         0x00
 #define ES8388_CONTROL2         0x01
@@ -240,7 +236,7 @@ public:
 
 	es8388();
 
-	err_t begin(TwoWire *theWire = &Wire);
+	bool begin(TwoWire *theWire = &Wire);
 	void config( int bits, es_dac_output_t output = DAC_OUTPUT_LOUT1, es_adc_input_t input = ADC_INPUT_LINPUT2_RINPUT2, int volume = 70 );
 	void read_all(void);
 
@@ -249,18 +245,18 @@ private:
 
 	Adafruit_I2CDevice *i2c_dev = NULL;
 
-	err_t i2c_write( uint8_t reg, uint8_t value);
-	err_t i2c_read( uint8_t reg, uint8_t* value);
+	bool i2c_write( uint8_t reg, uint8_t value);
+	bool i2c_read( uint8_t reg, uint8_t* value);
 
-	esp_err_t es_write_reg(uint8_t reg_add, uint8_t data);
-	esp_err_t es_read_reg(uint8_t reg_add, uint8_t *p_data);
+	bool es_write_reg(uint8_t reg_add, uint8_t data);
+	bool es_read_reg(uint8_t reg_add, uint8_t *p_data);
 
 	int set_adc_dac_volume(int mode, int volume, int dot);
-	esp_err_t init( es_dac_output_t output, es_adc_input_t input );
-	esp_err_t config_i2s( es_bits_length_t bits_length, es_module_t mode, es_format_t fmt );
-	esp_err_t set_voice_mute(bool enable);
-	esp_err_t start(es_module_t mode);
-	esp_err_t set_voice_volume(int volume);
+	bool init( es_dac_output_t output, es_adc_input_t input );
+	bool config_i2s( es_bits_length_t bits_length, es_module_t mode, es_format_t fmt );
+	bool set_voice_mute(bool enable);
+	bool start(es_module_t mode);
+	bool set_voice_volume(int volume);
 
 };
 
