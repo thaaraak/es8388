@@ -9,7 +9,7 @@
 #include "es8388.h"
 #include "Wire.h"
 
-uint16_t sample_rate=44100;
+uint16_t sample_rate=40000;
 uint16_t channels = 2;
 uint16_t bits_per_sample = 16; // or try with 24 or 32
 I2SStream i2s;
@@ -30,7 +30,7 @@ void setup(void) {
   //  es_adc_input_t input = ADC_INPUT_LINPUT1_RINPUT1;
 
   TwoWire wire(0);
-  wire.setPins( 33, 32 );
+  wire.setPins( 4, 15 );
   
   es8388 codec;
   codec.begin( &wire );
@@ -43,12 +43,13 @@ void setup(void) {
   config.bits_per_sample = bits_per_sample; 
   config.channels = 2;
   config.i2s_format = I2S_STD_FORMAT;
-  config.pin_ws = 25;
-  config.pin_bck = 27;
-  config.pin_data = 26;
-  config.pin_data_rx = 35;
+  config.pin_ws = 18;
+  config.pin_bck = 5;
+  config.pin_data = 17;
+  config.pin_data_rx = 16;
   //config.fixed_mclk = 0;
-  config.pin_mck = 0;
+  config.pin_mck = 3;
+
   i2s.begin(config);
 
   Serial.println("I2S started...");
